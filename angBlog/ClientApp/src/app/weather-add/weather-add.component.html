@@ -1,0 +1,25 @@
+<div>
+  <form (ngSubmit)="submit()" #addForm="ngForm" class="add-form" novalidate>
+    <div class="form-group">
+      <label>Summary</label>
+      <input type="text" class="form-control" name="summary" [(ngModel)]="forecast.summary" #summary="ngModel" required>
+      <div class="alert alert-danger" [hidden]="summary.valid">Summary is required</div>
+    </div>
+    <div class="form-group">
+      <label>Temp. C</label>
+      <input type="number" class="form-control" name="temp" [(ngModel)]="forecast.tempC" #temp="ngModel" required>
+      <div class="alert alert-danger" [hidden]="temp.valid">Temp C is required</div>
+    </div>
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" class="form-control" name="date" [(ngModel)]="forecast.date" #date="ngModel" required>
+      <div class="alert alert-danger" [hidden]="date.valid">Date is required</div>
+    </div>
+    <div class="alert alert-danger" *ngIf="errorMessage != null">{{ errorMessage }}</div>
+    <div>
+      
+      <button (click)="submitWeather()" class="btn btn-success" [disabled]="addForm.pristine || !addForm.valid">{{ operationText }}</button>
+    </div>
+  </form>
+  <br />
+</div>
