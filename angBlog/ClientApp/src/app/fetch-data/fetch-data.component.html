@@ -19,6 +19,7 @@
       <td>{{ forecast.temperatureC }}</td>
       <td>{{ forecast.temperatureF }}</td>
       <td>{{ forecast.summary }}</td>
+      <td><a [routerLink]="['/forecast',forecast._id]">View Forecast</a></td>
     </tr>
   </tbody>
 </table>
