@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { FormArray, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Forecast } from '../shared/interfaces';
+
 
 @Component({
   selector: 'app-weather-detail',
@@ -6,10 +11,46 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./weather-detail.component.css']
 })
 export class WeatherDetailComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  detailForm: FormGroup;
+  id: string;
+  weatherURL: string;
+  headers = new HttpHeaders().set('content-type', 'application/json');
+  constructor(private route: ActivatedRoute,
+    private http: HttpClient,
+    private fb: FormBuilder,
+    @Inject('BASE_URL') baseUrl: string
+  ) {
+    this.weatherURL = baseUrl + 'api/Weather';
   }
+
+
+    ngOnInit() {
+      this.detailForm = this.fb.group({
+        comments: this.fb.array([])
+      })
+      this.id = this.route.snapshot.paramMap.get('_id');
+      this.weatherURL += '/' + this.id;
+      if (this.id) {
+        this.http.get(this.weatherURL).subscribe(result => {
+          result;
+        }, error => console.error(error));
+      };
+
+      // Subscribe to params so if it changes we pick it up. Could use this.route.parent.snapshot.params["id"] to simplify it.
+      //this.route.parent.params.subscribe((params: Params) => {
+      //  const id = params['id'];
+      //  if (id) {
+      //    //this.dataService.getPost(id)
+      //    //  .subscribe((post: IPost) => {
+      //    //    this.post = post;
+      //    //    this.post.id = id;
+      //    //    if (!this.post.likes) this.post.likes = 0;
+      //    //    if (!this.post.dislikes) this.post.dislikes = 0;
+      //    //    this.mapEnabled = true;
+      // //    // });
+      //  }
+      //});
+    }
+ 
 
 }
