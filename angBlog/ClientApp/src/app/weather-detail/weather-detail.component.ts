@@ -2,7 +2,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormArray, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
-import { Forecast } from '../shared/interfaces';
+import { Forecast, WeatherForecast } from '../shared/interfaces';
 
 
 @Component({
@@ -13,6 +13,7 @@ import { Forecast } from '../shared/interfaces';
 export class WeatherDetailComponent implements OnInit {
   detailForm: FormGroup;
   id: string;
+  forecast: WeatherForecast;
   weatherURL: string;
   headers = new HttpHeaders().set('content-type', 'application/json');
   constructor(private route: ActivatedRoute,
@@ -31,8 +32,12 @@ export class WeatherDetailComponent implements OnInit {
       this.id = this.route.snapshot.paramMap.get('_id');
       this.weatherURL += '/' + this.id;
       if (this.id) {
-        this.http.get(this.weatherURL).subscribe(result => {
-          result;
+        this.http.get<WeatherForecast>(this.weatherURL).subscribe(result => {
+          this.forecast = result;
+          //this.forecast.dateFormatted = result.dateFormatted;
+          //this.forecast.summary = result.summary;
+          //this.forecast.temperatureC = result.temperatureC;
+          //this.forecast.temperatureF = result.temperatureF;
         }, error => console.error(error));
       };
 

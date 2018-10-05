@@ -69,9 +69,34 @@ namespace ngTest.Controllers
         //}
         // GET: api/Weather/5
         [HttpGet("{id}", Name = "GetWeather")]
-        public string Get(int id)
+        public WeatherForecast Get(string id)
         {
-            return $"value {id}";
+            List<WeatherForecast> forecasts = new List<WeatherForecast>();
+            var client = new MongoClient();
+            var db = client.GetDatabase("weather");
+            var col = db.GetCollection<MongoForecast>("forecasts");
+            var mongoId = new ObjectId(id);
+            var query = new BsonDocument(new BsonElement("_id", mongoId));
+            var list = col.Find(query).ToList();
+            var index = 0;
+            foreach (var doc in list)
+            {
+                var forecast = new WeatherForecast
+                {
+                    _id = doc._id,
+                    DateFormatted = doc.date.ToString(),
+                    TemperatureC = doc.tempC,
+                    Summary = doc.summary
+                };
+                //yield return forecast;
+                forecasts.Insert(index, forecast);
+
+            }
+    
+               
+
+            return forecasts[0];
+
         }
         //[HttpPost]
         //[ProducesResponseType(400)]

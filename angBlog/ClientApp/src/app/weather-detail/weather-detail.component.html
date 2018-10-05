@@ -1,4 +1,5 @@
 <p>
-  weather-detail works!
-  {{id}}
+  The forecast for {{forecast.dateFormatted | date : "dd/MMM/yyyy"}}.
+  <br />
+  Is {{forecast.summary}} the temperature will be {{forecast.temperatureC}} C which is {{forecast.temperatureF}} F.
 </p>
