@@ -32,6 +32,11 @@
                 <span class='glyphicon glyphicon-th-list'></span> Add Forecast
               </a>
             </li>
+            <li [routerLinkActive]='["link-active"]'>
+              <a [routerLink]='["/posts"]' (click)='collapse()'>
+                <span class='glyphicon glyphicon-th-list'></span> Posts
+              </a>
+            </li>
           </ul>
         </div>
     </div>

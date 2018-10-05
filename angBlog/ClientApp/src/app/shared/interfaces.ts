@@ -6,3 +6,9 @@ export interface Forecast {
   tempC: number;
   summary: string;
 }
+export interface WeatherForecast {
+  dateFormatted: string;
+  temperatureC: number;
+  temperatureF: number;
+  summary: string;
+}

@@ -12,6 +12,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { WeatherAddComponent } from './weather-add/weather-add.component';
 import { WeatherDetailComponent } from './weather-detail/weather-detail.component';
+import { PostsComponent } from './posts/posts.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { WeatherDetailComponent } from './weather-detail/weather-detail.componen
     CounterComponent,
     FetchDataComponent,
     WeatherAddComponent,
-    WeatherDetailComponent
+    WeatherDetailComponent,
+    PostsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,7 +35,8 @@ import { WeatherDetailComponent } from './weather-detail/weather-detail.componen
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'weather', component: WeatherAddComponent },
-      { path: 'forecast/:_id', component: WeatherDetailComponent},
+      { path: 'forecast/:_id', component: WeatherDetailComponent },
+      { path: 'posts', component: PostsComponent },
     ])
   ],
   providers: [],
