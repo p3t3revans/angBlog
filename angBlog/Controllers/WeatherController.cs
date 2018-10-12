@@ -8,6 +8,7 @@ using ngTest.Models;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Globalization;
+using ngBlog.Models;
 
 namespace ngTest.Controllers
 {
@@ -17,14 +18,56 @@ namespace ngTest.Controllers
     {
         // GET: api/Weather
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> GetWeather()
+        //public async Task<IEnumerable<WeatherForecast>> GetWeather([FromQuery] string page,string limit)
+        //{
+        //    var skip = int.Parse(page) - 1;
+        //    List<WeatherForecast> forecasts = new List<WeatherForecast>();
+        //    //WeatherForecasts forecasts = new WeatherForecasts();
+        //    //forecasts.forecasts = new List<WeatherForecast>();
+        //    var client = new MongoClient();
+        //    var db = client.GetDatabase("weather");
+        //    var col = db.GetCollection<MongoForecast>("forecasts");
+            
+        //    var numberOfForecasts = await col.Find(new BsonDocument()).CountDocumentsAsync();
+        //    //forecasts.numberOfForecasts = (int) numberOfForecasts ;
+        //    var list =  await col.Find(new BsonDocument())
+        //        .Skip(skip)
+        //        .Limit(int.Parse(limit))
+        //        .ToListAsync();
+        //    var index = 0;
+        //    foreach (var doc in list)
+        //    {
+        //        var forecast = new WeatherForecast
+        //        {
+        //            _id = doc._id,
+        //            DateFormatted = doc.date.ToString(),
+        //            TemperatureC = doc.tempC,
+        //            Summary = doc.summary
+        //        };
+        //        //yield return forecast;
+        //        forecasts.Insert(index, forecast);
+
+        //    }
+        //    return forecasts;
+
+        //}
+        public async Task<WeatherForecasts> GetWeather([FromQuery] string page, string limit)
         {
-            List<WeatherForecast> forecasts = new List<WeatherForecast>();
+            var skip = (int.Parse(page) - 1)*(int.Parse(limit));
+            //List<WeatherForecast> forecasts = new List<WeatherForecast>();
+            WeatherForecasts forecasts = new WeatherForecasts();
+            forecasts.forecasts = new List<WeatherForecast>();
             var client = new MongoClient();
             var db = client.GetDatabase("weather");
             var col = db.GetCollection<MongoForecast>("forecasts");
-
-            var list = col.Find(new BsonDocument()).ToList();
+            var sort = new MongoForecast();
+            var numberOfForecasts = await col.Find(FilterDefinition<MongoForecast>.Empty).CountDocumentsAsync();
+            forecasts.count = (int) numberOfForecasts ;
+            var list = await col.Find(FilterDefinition<MongoForecast>.Empty)
+                .Skip(skip)
+                .Limit(int.Parse(limit))
+                .Sort(Builders<MongoForecast>.Sort.Descending("date"))
+                .ToListAsync();
             var index = 0;
             foreach (var doc in list)
             {
@@ -36,7 +79,8 @@ namespace ngTest.Controllers
                     Summary = doc.summary
                 };
                 //yield return forecast;
-                forecasts.Insert(index, forecast);
+                forecasts.forecasts.Insert(index,forecast);
+                index++;
 
             }
             return forecasts;
@@ -139,7 +183,7 @@ namespace ngTest.Controllers
 
         // PUT: api/Weather/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Forecast value)
+        public void Put(string id, [FromBody] Forecast value)
         {
             //var values = new Forecast();
             var blogContext = new BlogContext();
@@ -158,7 +202,7 @@ namespace ngTest.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
         }
     }

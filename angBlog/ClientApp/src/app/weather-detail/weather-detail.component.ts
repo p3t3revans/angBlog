@@ -2,7 +2,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormArray, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
-import { Forecast, WeatherForecast } from '../shared/interfaces';
+import { Forecast, WeatherForecast } from '../shared/interface';
 
 
 @Component({
@@ -34,10 +34,6 @@ export class WeatherDetailComponent implements OnInit {
       if (this.id) {
         this.http.get<WeatherForecast>(this.weatherURL).subscribe(result => {
           this.forecast = result;
-          //this.forecast.dateFormatted = result.dateFormatted;
-          //this.forecast.summary = result.summary;
-          //this.forecast.temperatureC = result.temperatureC;
-          //this.forecast.temperatureF = result.temperatureF;
         }, error => console.error(error));
       };
 

@@ -31,13 +31,6 @@ export class WeatherAddComponent implements OnInit {
   }
   submitWeather() {
     var headers = new HttpHeaders().set('content-type', 'application/json');
-    var data = {
-      date: this.forecast.date,
-      tempC: this.forecast.tempC,
-      summary: this.forecast.summary,
-      
-    };
-    //this.http.post(this.weatherURL, data, { headers });
     this.http.post<Forecast>(this.weatherURL, this.forecast, { headers }).subscribe(result => {
       result;
     }, error => console.error(error));

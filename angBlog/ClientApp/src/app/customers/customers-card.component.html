@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row card-container">
+        <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let forecast of forecasts">
+            <div class="card">
+                <div class="card-header">
+                  <a [routerLink]="['/forecast',forecast._id,'details']" class="white">
+                    {{forecast.dateFormatted | date: "dd/MMM/yyyy"}} {{ forecast.temperatureC}} C
+                  </a>
+                    <a [routerLink]="['/forecast',forecast._id,'edit']">
+                        <i title="Edit"  
+                           class="pull-right glyphicon glyphicon-edit edit-icon white"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="clearfix">
+                        <!--<div class="pull-left card-body-left">
+                            <a href="#" class="white">
+                                <img src="assets/images/{{forecast.summary | lowercase}}.png" class="card-image" />
+                            </a>
+                        </div>-->
+                        <div class="pull-left card-body-right">
+                          <div class="card-body-content">{{forecast.summary | trim }}</div>
+                            <a [routerLink]="['/forecast',forecast._id]">View Forecast</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!forecasts">
+            No Forecasts Found
+        </div>
+    </div>
+</div>

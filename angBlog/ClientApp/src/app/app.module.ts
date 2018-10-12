@@ -12,7 +12,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { WeatherAddComponent } from './weather-add/weather-add.component';
 import { WeatherDetailComponent } from './weather-detail/weather-detail.component';
-import { PostsComponent } from './posts/posts.component';
+//import { PostsComponent } from './posts/posts.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +22,8 @@ import { PostsComponent } from './posts/posts.component';
     CounterComponent,
     FetchDataComponent,
     WeatherAddComponent,
-    WeatherDetailComponent,
-    PostsComponent
+    WeatherDetailComponent//,
+    //PostsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -36,7 +36,12 @@ import { PostsComponent } from './posts/posts.component';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'weather', component: WeatherAddComponent },
       { path: 'forecast/:_id', component: WeatherDetailComponent },
-      { path: 'posts', component: PostsComponent },
+      { path: 'forecast/:_id/details', component: WeatherDetailComponent },
+      { path: 'forecast/:_id/edit', component: WeatherDetailComponent },
+      //{ path: 'posts', component: PostsComponent },
+      { path: 'posts', loadChildren: 'app/post.add/post.module#PostModule' },
+      { path: 'customers', loadChildren: 'app/customers/customers.module#CustomersModule' },
+      { path: 'addpost', loadChildren: 'app/customers/customers.module#CustomersModule' },
     ])
   ],
   providers: [],

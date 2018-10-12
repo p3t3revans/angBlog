@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row grid-container">
+        <div class="col-md-10">
+            <div class="table">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th cmSortBy="dateFormatted" >Date</th>
+                            <th cmSortBy="temperatureC" >Temp C</th>
+                            <th cmSortBy="temperatureF">Temp F</th>
+                            <th cmSortBy="summary" >Forecast</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let forecast of forecasts">
+                            <!--<td><img src="assets/images/{{ customer.gender | lowercase }}.png"
+                                    class="grid-image" alt="Customer Image" /></td>-->
+                            <td><a [routerLink]="['/forecast',forecast._id,'details']">{{ forecast.dateFormatted| date : "dd/MMM/yyyy" }}</a></td>
+                            <td>{{ forecast.temperatureC  }}</td>
+                            <td>{{ forecast.temperatureF }}</td>
+                            <td>{{ forecast.summary  }}</td>
+                        </tr>
+                        <tr *ngIf="!forecasts.length">
+                            <td>&nbsp;</td>
+                            <td colspan="7">No Records Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
