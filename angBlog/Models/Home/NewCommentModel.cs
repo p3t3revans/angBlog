@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 
-namespace ngTest.Models
+namespace angBlog.Models
 {
     public class NewCommentModel
     {

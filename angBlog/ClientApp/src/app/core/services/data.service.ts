@@ -1,21 +1,107 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject  } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { ICustomer, IOrder, IState, IPagedResults, IApiResponse } from '../../shared/interfaces';
+import { IPost, ICustomer, IOrder, IState, IPagedResults, IApiResponse, IComment} from '../../shared/interfaces';
 
 @Injectable()
 export class DataService {
-
+    postsBaseUrl = ''
     customersBaseUrl = '/api/customers';
     ordersBaseUrl = '/api/orders';
     orders: IOrder[];
     states: IState[];
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    @Inject('BASE_URL') baseUrl: string
+  ) {
+    this.postsBaseUrl = baseUrl + 'api/Post/';
+  }
+    getPostsPage(page: number, pageSize: number):  Observable<IPagedResults<IPost[]>> {
+        return this.http.get<IPost[]>(
+            `${this.postsBaseUrl}/page/${page}/${pageSize}`,
+            //'/api/posts',
+            { observe: 'response' })
+            .pipe(
+                map(res => {
+                    //const totalRecords = +res.headers.get('X-InlineCount');
+                    const totalRecords = +res.headers.get('X-InlineCount');
+                    const posts = res.body as IPost[];
+                    return {
+                        results: posts,
+                        totalRecords: totalRecords
+                    };
+                }),
+                catchError(this.handleError)
+            ); 
 
+    } 
+    getPost(id: string): Observable<IPost> {
+        return this.http.get<IPost>(this.postsBaseUrl + '/' + id)
+            .pipe(
+                map(post => {
+                    //this.calculateCustomersOrderTotal([post]);
+                    return post;
+                }),
+                catchError(this.handleError)
+            );
+    }
+    insertPost(post: IPost): Observable<IPost> {
+        return this.http.post<IPost>(this.postsBaseUrl , post)
+            .pipe(catchError(this.handleError));
+    }
+    likePost(post:IPost): Observable<boolean> {
+        return this.http.put<IApiResponse>(this.postsBaseUrl + '/like/' + post.id,post)
+            .pipe(
+                map(res => res.status),
+                catchError(this.handleError)
+            );
+    }
+    likeComment(postId:string,commentId:string): Observable<boolean> {
+        return this.http.put<IApiResponse>(`${this.postsBaseUrl}/like/${postId}/${commentId}`,{})
+            .pipe(
+                map(res => res.status),
+                catchError(this.handleError)
+            );
+    }
+    dislikePost(post:IPost): Observable<boolean> {
+        return this.http.put<IApiResponse>(this.postsBaseUrl + '/dislike/' + post.id,post)
+            .pipe(
+                map(res => res.status),
+                catchError(this.handleError)
+            );
+    }
+    dislikeComment(postId:string,commentId:string): Observable<boolean> {
+        return this.http.put<IApiResponse>(`${this.postsBaseUrl}/dislike/${postId}/${commentId}`,{})
+            .pipe(
+                map(res => res.status),
+                catchError(this.handleError)
+            );
+    }
+    insertComment(post:IPost,comment:IComment): Observable<boolean> {
+        return this.http.put<IApiResponse>(this.postsBaseUrl + '/comment/' + post.id, comment)
+            .pipe(
+                map(res => res.status),
+                catchError(this.handleError)
+            );
+    }
+    updatePost(post: IPost): Observable<boolean> {
+        return this.http.put<IApiResponse>(this.postsBaseUrl + '/' + post.id, post)
+            .pipe(
+                map(res => res.status),
+                catchError(this.handleError)
+            );
+    }
+
+    deletePost(id: string): Observable<boolean> {
+        return this.http.delete<IApiResponse>(this.postsBaseUrl + '/' + id)
+            .pipe(
+                map(res => res.status),
+                catchError(this.handleError)
+            );
+    }
     getCustomersPage(page: number, pageSize: number): Observable<IPagedResults<ICustomer[]>> {
         return this.http.get<ICustomer[]>(
             `${this.customersBaseUrl}/page/${page}/${pageSize}`,
@@ -33,7 +119,7 @@ export class DataService {
                 catchError(this.handleError)
             );
     }
-
+    
     getCustomers(): Observable<ICustomer[]> {
         return this.http.get<ICustomer[]>(this.customersBaseUrl)
             .pipe(

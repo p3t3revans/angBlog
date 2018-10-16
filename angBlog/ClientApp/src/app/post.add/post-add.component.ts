@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-//import { NgForm } from '@angular/forms';
-//import { DataService } from '../core/services/data.service';
-//import { ModalService, IModalContent } from '../core/modal/modal.service';
-import { IPost} from '../shared/interfaces';
-//import { GrowlerService, GrowlerMessageType } from '../core/growler/growler.service';
-//import { LoggerService } from '../core/services/logger.service';
+import { NgForm } from '@angular/forms';
+import { DataService } from '../core/services/data.service';
+import { ModalService, IModalContent } from '../core/modal/modal.service';
+import { NewPost} from '../shared/interface';
+import { GrowlerService, GrowlerMessageType } from '../core/growler/growler.service';
+import { LoggerService } from '../core/services/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 //import { AngularEditorConfig } from '@kolkov/angular-editor';
 
@@ -27,17 +27,10 @@ export class PostAddComponent implements OnInit {
   //  customClasses : []
   //}
  addForm: FormGroup;
-  post: IPost =
+  post: NewPost =
     {
-      id: '',
       title: '',
-      content: '',
-      author: 'user',
-      comments: [],
-      createDate: new Date(Date.now()),
-      tags: ['news'],
-      likes:0,
-      dislikes:0
+      content: ''
     };
   //states: IState[];
   errorMessage: string;
@@ -53,6 +46,9 @@ export class PostAddComponent implements OnInit {
 
   constructor(private http: HttpClient,
     private router: Router,
+    private dataService: DataService,
+    private logger: LoggerService,
+    private growler: GrowlerService,
     private formBuilder: FormBuilder,
     @Inject('BASE_URL') baseUrl: string
   ) {
@@ -83,9 +79,15 @@ export class PostAddComponent implements OnInit {
 
   submit() {
     var headers = new HttpHeaders().set('content-type', 'application/json');
-    this.http.post<IPost>(this.weatherURL, this.post, { headers }).subscribe(result => {
+    this.http.post<NewPost>(this.weatherURL, this.post, { headers }).subscribe(result => {
       result;
     }, error => console.error(error));
+    //var headers = new HttpHeaders().set('content-type', 'application/json');
+    //this.http.post<IPost>(this.weatherURL, this.post, { headers }).subscribe(result => {
+    //  result;
+    //}, error => console.error(error));
+    //const msg = 'Submit happened';
+
     //this.dataService.insertPost(this.post)
     //  .subscribe((insertedPost: IPost) => {
     //    if (insertedPost) {

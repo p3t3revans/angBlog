@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
+import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -12,11 +13,13 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { WeatherAddComponent } from './weather-add/weather-add.component';
 import { WeatherDetailComponent } from './weather-detail/weather-detail.component';
+import { sharedStylesheetJitUrl } from '@angular/compiler';
 //import { PostsComponent } from './posts/posts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
@@ -27,6 +30,8 @@ import { WeatherDetailComponent } from './weather-detail/weather-detail.componen
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    SharedModule,
+    CoreModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -39,9 +44,9 @@ import { WeatherDetailComponent } from './weather-detail/weather-detail.componen
       { path: 'forecast/:_id/details', component: WeatherDetailComponent },
       { path: 'forecast/:_id/edit', component: WeatherDetailComponent },
       //{ path: 'posts', component: PostsComponent },
-      { path: 'posts', loadChildren: 'app/post.add/post.module#PostModule' },
-      { path: 'customers', loadChildren: 'app/customers/customers.module#CustomersModule' },
-      { path: 'addpost', loadChildren: 'app/customers/customers.module#CustomersModule' },
+      { path: 'addpost', loadChildren: 'app/post.add/post.module#PostModule' },
+      { path: 'listposts', loadChildren: 'app/posts.list/posts.module#PostsModule' },
+    //  { path: 'addpost', loadChildren: 'app/customers/customers.module#CustomersModule' },
     ])
   ],
   providers: [],

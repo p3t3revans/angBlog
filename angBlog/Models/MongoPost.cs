@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-
 namespace angBlog.Models
 {
-    [BsonIgnoreExtraElements]
-    public class Post
+    public class MongoPost
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; }
@@ -22,7 +20,7 @@ namespace angBlog.Models
 
         public string[] tags { get; set; }
 
-        public string createDate { get; set; }
+        public BsonDateTime createDate { get; set; }
 
         public List<Comment> comments { get; set; }
 
@@ -30,6 +28,5 @@ namespace angBlog.Models
 
         public int dislikes { get; set; }
 
-       
     }
 }

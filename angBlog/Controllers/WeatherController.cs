@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ngTest.Models;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Globalization;
-using ngBlog.Models;
+using angBlog.Models;
 
 namespace ngTest.Controllers
 {
@@ -173,7 +172,7 @@ namespace ngTest.Controllers
             values.summary = value.summary;
             try
             {
-                blogContext.MongoForecasts.InsertOne(values);
+               // blogContext.MongoForecasts.InsertOne(values);
             }
             catch (Exception err)
             {
@@ -192,7 +191,7 @@ namespace ngTest.Controllers
             value.summary = "hot";
             try
             {
-                blogContext.Forecasts.InsertOne(value);
+                //blogContext.Forecasts.InsertOne(value);
             }
             catch (Exception err)
             {

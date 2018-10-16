@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ngTest.Models
+namespace angBlog.Models
 {
     public class TagProjection
     {

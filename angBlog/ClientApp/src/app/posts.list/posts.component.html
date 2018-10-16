@@ -28,7 +28,7 @@
                         </li>
                         <li class="toolbar-item">
                             <a routerLink="/customers/0/edit">
-                                <span class="glyphicon glyphicon-plus"></span> New Customer
+                                <span class="glyphicon glyphicon-plus"></span> New Post
                             </a>
                         </li>
                     </ul>
@@ -38,13 +38,13 @@
             </div>
         </div>
         
-        <cm-customers-card 
-          [forecasts]="filteredForecasts" 
-          [hidden]="displayMode !== displayModeEnum.Card"></cm-customers-card>
+        <cm-posts-card 
+          [posts]="filteredPosts" 
+          [hidden]="displayMode !== displayModeEnum.Card"></cm-posts-card>
     
-        <cm-customers-grid 
-          [forecasts]="filteredForecasts"
-          [hidden]="displayMode !== displayModeEnum.Grid"></cm-customers-grid>
+        <cm-posts-grid 
+          [posts]="filteredPosts"
+          [hidden]="displayMode !== displayModeEnum.Grid"></cm-posts-grid>
 
         <!--<cm-map *ngIf="filteredCustomers.length" 
             [zoom]="2" 

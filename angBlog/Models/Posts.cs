@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-
 namespace angBlog.Models
-
 {
-    public class WeatherForecasts
+    public class Posts
     {
         public int count { set; get; }
-        public List<WeatherForecast> forecasts { set; get; }
-       
+        public List<Post> posts { set; get; }
     }
 }

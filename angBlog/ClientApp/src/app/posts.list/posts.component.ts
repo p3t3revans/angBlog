@@ -1,39 +1,39 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 //import { DataService } from '../core/services/data.service';
-import { Forecast, WeatherForecast,WeatherForecasts } from '../shared/interface';
+import { IPost, Posts } from '../shared/interface';
 //import { FilterService } from '../core/services/filter.service';
 import { LoggerService } from '../core/services/logger.service';
 
 @Component({
-  selector: 'cm-customers',
-  templateUrl: './customers.component.html'
+  selector: 'cm-posts',
+  templateUrl: './posts.component.html'
 })
-export class CustomersComponent implements OnInit {
+export class PostsComponent implements OnInit {
 
   title: string;
   filterText: string;
-  forecasts: WeatherForecast[]=[];
-  filteredForecasts: WeatherForecast[] = [];
+  posts: IPost[] = [];
+  filteredPosts: IPost[] = [];
   displayMode: DisplayModeEnum;
   displayModeEnum = DisplayModeEnum;
   totalRecords: number;
   pageSize = 8;
-  weatherURL: string;
-  public returnData: WeatherForecasts;
+  postURL: string;
+  public returnData: Posts;
 
   constructor(private http: HttpClient,
    //private filterService: FilterService,
     private logger: LoggerService, @Inject('BASE_URL') baseUrl: string
   ) {
-    this.weatherURL = baseUrl + 'api/Weather';
+    this.postURL = baseUrl + 'api/Post';
   }
   ngOnInit() {
-    this.title = 'Forecasts';
-    this.filterText = 'Filter Forecasts:';
+    this.title = 'Posts';
+    this.filterText = 'Filter Posts:';
     this.displayMode = DisplayModeEnum.Card;
 
-    this.getCustomersPage(1);
+    this.getPostsPage(1);
   }
 
   changeDisplayMode(mode: DisplayModeEnum) {
@@ -41,17 +41,17 @@ export class CustomersComponent implements OnInit {
   }
 
   pageChanged(page: number) {
-    this.getCustomersPage(page);
+    this.getPostsPage(page);
   }
 
-  getCustomersPage(page: number) {
+  getPostsPage(page: number) {
     var headers = new HttpHeaders().set('content-type', 'application/json');
     let params = new HttpParams().set('page', page.toString()).set('limit', this.pageSize.toString());
     const options = { params: params, headers: headers };
     
-    this.http.get<WeatherForecasts>(this.weatherURL + '/GetWeather', options).subscribe(result => {
+    this.http.get<Posts>(this.postURL + '/GetPosts', options).subscribe(result => {
 
-      this.filteredForecasts = this.forecasts = result.forecasts;
+      this.filteredPosts = this.posts = result.posts;
       this.totalRecords = result.count;
       
     }, error => console.error(error));

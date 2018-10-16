@@ -1,7 +1,8 @@
 ﻿
 using System.Collections.Generic;
 
-namespace ngTest.Models
+
+namespace angBlog.Models
 {
     public class IndexModel
     {

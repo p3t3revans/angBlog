@@ -17,3 +17,32 @@ export interface WeatherForecasts {
   count: number;
   forecasts: WeatherForecast[];
 }
+export interface NewPost {
+  title: string;
+  content: string;
+}
+
+export interface Posts {
+  count: number;
+  posts: IPost[];
+}
+export interface IPost {
+  id: string;
+  author: string;
+  title: string;
+  content: string;
+  tags: string[];
+  createDate: Date;
+  comments: IComment[];
+  likes: number;
+  dislikes: number;
+}
+
+export interface IComment {
+  commentDate: Date;
+  createUser: string;
+  text: string;
+  likes: number;
+  dislikes: number;
+}
+

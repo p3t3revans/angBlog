@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row grid-container">
+        <div class="col-md-10">
+            <div class="table">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th cmSortBy="createDate" >Date</th>
+                            <th cmSortBy="author" >Author</th>
+                            <th cmSortBy="title">Title</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let post of posts">
+                            <td><a [routerLink]="['/post',post._id,'details']">{{ post.createDate| date : "dd/MMM/yyyy" }}</a></td>
+                            <td>{{ post.author}}</td>
+                            <td>{{ post.title }}</td>
+                        </tr>
+                        <tr *ngIf="!posts.length">
+                            <td>&nbsp;</td>
+                            <td colspan="7">No Posts Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

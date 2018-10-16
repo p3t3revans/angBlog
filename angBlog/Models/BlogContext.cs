@@ -5,13 +5,14 @@ using System.Linq;
 using System.Web;
 using MongoDB.Driver;
 
-namespace ngTest.Models
+
+namespace angBlog.Models
 {
     public class BlogContext
     {
-        public const string CONNECTION_STRING_NAME = "weather";
-        public const string DATABASE_NAME = "weather";
-        public const string POSTS_COLLECTION_NAME = "forecasts";
+        public const string CONNECTION_STRING_NAME = "Blog";
+        public const string DATABASE_NAME = "blog";
+        public const string POSTS_COLLECTION_NAME = "posts";
         public const string USERS_COLLECTION_NAME = "users";
 
         // This is ok... Normally, they would be put into
@@ -21,8 +22,8 @@ namespace ngTest.Models
 
         static BlogContext()
         {
-            //var connectionString = ConfigurationManager.ConnectionStrings[CONNECTION_STRING_NAME].ConnectionString;
-            _client = new MongoClient();
+            var connectionString = Startup.ConnectionString;
+            _client = new MongoClient(connectionString);
             _database = _client.GetDatabase(DATABASE_NAME);
         }
 
@@ -31,14 +32,14 @@ namespace ngTest.Models
             get { return _client; }
         }
 
-        public IMongoCollection<Forecast> Forecasts
+        public IMongoCollection<Post> Posts
         {
-            get { return _database.GetCollection<Forecast>(POSTS_COLLECTION_NAME); }
-        }
-        public IMongoCollection<MongoForecast> MongoForecasts
-        {
-            get { return _database.GetCollection<MongoForecast>(POSTS_COLLECTION_NAME); }
+            get { return _database.GetCollection<Post>(POSTS_COLLECTION_NAME); }
         }
 
+        public IMongoCollection<User> Users
+        {
+            get { return _database.GetCollection<User>(USERS_COLLECTION_NAME); }
+        }
     }
 }

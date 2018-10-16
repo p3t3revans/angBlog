@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ngTest.Models
+
+namespace angBlog.Models
 {
     public class PostModel
     {

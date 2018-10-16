@@ -6,7 +6,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 
-namespace ngTest.Models
+namespace angBlog.Models
 {
     [BsonIgnoreExtraElements]
     public class WeatherForecast

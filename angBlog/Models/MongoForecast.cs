@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ngTest.Models
+namespace angBlog.Models
 {
     [BsonIgnoreExtraElements]
     public class MongoForecast
@@ -13,7 +13,6 @@ namespace ngTest.Models
         public BsonObjectId _id { get; set; }
         public BsonDateTime date { get; set; }
         public int tempC { get; set; }
-        //public int tempF { get; set; }
         public string summary { get; set; }
     }
 }

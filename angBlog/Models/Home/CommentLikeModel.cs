@@ -1,5 +1,5 @@
 ﻿
-namespace ngTest.Models
+namespace angBlog.Models
 {
     public class CommentLikeModel
     {
