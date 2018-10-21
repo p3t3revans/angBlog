@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace angBlog.Models
 {
-    public class Posts
+    public class Com
     {
-        public int count { set; get; }
-        public List<MongoPost> posts { set; get; }
+        public string id { get; set; }
+        public string comment { get; set; }
     }
 }

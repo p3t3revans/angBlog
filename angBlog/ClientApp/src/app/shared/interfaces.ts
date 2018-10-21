@@ -47,7 +47,7 @@ export interface IApiResponse {
 }
 
 export interface IPost {
-  id: string;
+  _id: string;
   author: string;
   title: string;
   content: string;

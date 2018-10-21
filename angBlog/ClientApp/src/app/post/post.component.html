@@ -1,33 +1,33 @@
 <div class="comments view">
     <div class="container">
         <header>
-            <h3><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;New Post</h3>
+            <h3><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Post Information</h3>
         </header>
         <br />
         <div class="navbar">
-          <!--   <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">
                 <li class="toolbar-item">
                     <a routerLink="details" routerLinkActive="active">
                        <span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Post Details
                     </a>
                 </li>
-                <li class="toolbar-item">
+             <!--    <li class="toolbar-item">
                     <a routerLink="comments" routerLinkActive="active">
                         <span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;Post Comments
                     </a>
-                </li>
+                </li> -->
                 <li class="toolbar-item">
                     <a routerLink="edit" routerLinkActive="active">
                         <span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Edit Post
                     </a>
                 </li>
-            </ul> -->
+            </ul>
         </div>
-        <div >
-            <cm-post-add></cm-post-add>
+        <div class="container">
+            <router-outlet></router-outlet>
             <br />
             <br />
-            <a routerLink="/posts">View all Posts</a>
+            <a routerLink="/listposts">View all Posts</a>
         </div>
     </div>
 </div>

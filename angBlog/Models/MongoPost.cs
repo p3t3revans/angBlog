@@ -22,7 +22,7 @@ namespace angBlog.Models
 
         public BsonDateTime createDate { get; set; }
 
-        public List<Comment> comments { get; set; }
+        public List<MongoComment> comments { get; set; }
 
         public int likes { get; set; }
 

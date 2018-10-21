@@ -1,5 +1,5 @@
-<div>
-  <form (ngSubmit)="submit()" #addForm="ngForm" class="add-form" novalidate>
+<div class="container-fluid">
+  <form (ngSubmit)="submit()" #addForm="ngForm" class="post-form" novalidate>
     <div class="form-group">
       <label>Title</label>
       <input type="text" class="form-control" name="title" [(ngModel)]="post.title" #title="ngModel" required>

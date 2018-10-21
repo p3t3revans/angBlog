@@ -11,7 +11,7 @@ namespace angBlog.Models
     [BsonIgnoreExtraElements]
     public class Post
     {
-        [BsonRepresentation(BsonType.ObjectId)]
+       // [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; }
 
         public string author { get; set; }

@@ -36,7 +36,7 @@ export class PostAddComponent implements OnInit {
   errorMessage: string;
   deleteMessageEnabled: boolean;
   operationText = 'Insert';
-  weatherURL = '';
+  postURL = '';
 
   
 
@@ -52,7 +52,7 @@ export class PostAddComponent implements OnInit {
     private formBuilder: FormBuilder,
     @Inject('BASE_URL') baseUrl: string
   ) {
-    this.weatherURL = baseUrl + 'api/Post';
+    this.postURL = baseUrl + 'api/Post';
   }
 
 
@@ -79,9 +79,12 @@ export class PostAddComponent implements OnInit {
 
   submit() {
     var headers = new HttpHeaders().set('content-type', 'application/json');
-    this.http.post<NewPost>(this.weatherURL, this.post, { headers }).subscribe(result => {
+    this.http.post<NewPost>(this.postURL, this.post, { headers }).subscribe(result => {
       result;
+
     }, error => console.error(error));
+    this.router.navigate(['/posts']);
+
     //var headers = new HttpHeaders().set('content-type', 'application/json');
     //this.http.post<IPost>(this.weatherURL, this.post, { headers }).subscribe(result => {
     //  result;
@@ -89,7 +92,7 @@ export class PostAddComponent implements OnInit {
     //const msg = 'Submit happened';
 
     //this.dataService.insertPost(this.post)
-    //  .subscribe((insertedPost: IPost) => {
+    //  .subscribe((insertedPost: NewPost) => {
     //    if (insertedPost) {
     //      // Mark form as pristine so that CanDeactivateGuard won't prompt before navigation
     //      //this.addForm.form.markAsPristine();

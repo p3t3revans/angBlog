@@ -27,7 +27,7 @@ export interface Posts {
   posts: IPost[];
 }
 export interface IPost {
-  id: string;
+  _id: string;
   author: string;
   title: string;
   content: string;
@@ -44,5 +44,15 @@ export interface IComment {
   text: string;
   likes: number;
   dislikes: number;
+}
+
+export interface ICom {
+  id: string;
+  comment: string;
+}
+
+export interface LikeComment {
+  id: string;
+  index: number;
 }
 
