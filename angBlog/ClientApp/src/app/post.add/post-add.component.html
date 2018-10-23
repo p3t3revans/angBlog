@@ -9,7 +9,7 @@
         <label>Content</label>
         <!--<angular-editor id="postContent" [(ngModel)]="post.content" [config]="editorConfig" name="content" #content="ngModel" required>
           </angular-editor>-->
-        <input type="text" class="form-control" name="content" [(ngModel)]="post.content" #content="ngModel" required>
+        <textarea  class="form-control" name="content" [(ngModel)]="post.content" #content="ngModel" required></textarea>
         <div class="alert alert-danger" [hidden]="content.valid">Content is required</div>
       </div>
     <!--   <div class="form-group">

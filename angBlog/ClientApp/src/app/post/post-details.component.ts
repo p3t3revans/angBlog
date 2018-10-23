@@ -1,28 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {Router, ActivatedRoute, Params } from '@angular/router';
 import { FormArray, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { IPost, IComment } from '../shared/interfaces';
-import { ICom, LikeComment } from '../shared/interface';
+import { IPost, IComment, IApiResponse } from '../shared/interfaces';
+import { ICom, LikeComment, } from '../shared/interface';
 import { GrowlerService, GrowlerMessageType } from '../core/growler/growler.service';
 import { DataService } from '../core/services/data.service';
 //import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { LoggerService } from '../core/services/logger.service';
+import { HttpClient, HttpErrorResponse, HttpParams, HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'cm-post-details',
   templateUrl: './post-details.component.html',
   styleUrls: ['./post-details.component.css']
 })
 export class PostDetailsComponent implements OnInit {
-  //editorConfig: AngularEditorConfig = {
-  //  editable: false,
-  //  spellcheck: true,
-  //  height: '100rem',
-  //  minHeight: '5rem',
-  //  placeholder: 'Tekst leggur hér',
-  //  translate: 'yes',
-  //  uploadUrl: '/api/images',
-  //  customClasses: []
-  //};
+  postsBaseUrl = ''
   like_dislike_com: LikeComment = {
     id: '',
     index: 0
@@ -36,12 +28,12 @@ export class PostDetailsComponent implements OnInit {
   comment: IComment =
     {
       text: '',
-      createUser: 'user',
+      createUser: '',
       commentDate: new Date(Date.now()),
       likes:0,
       dislikes:0
     };
-  mapEnabled: boolean;
+
   detailForm :FormGroup;
   errorMessage:string;
   
@@ -56,8 +48,12 @@ export class PostDetailsComponent implements OnInit {
               private fb: FormBuilder,
               private growler: GrowlerService,
               private router: Router,
-              private logger: LoggerService
-            ) { }
+    private logger: LoggerService,
+    private http: HttpClient,
+    @Inject('BASE_URL') baseUrl: string
+  ) {
+    this.postsBaseUrl = baseUrl + 'api/Post/';
+  }
 
   ngOnInit() {
     this.detailForm = this.fb.group({
@@ -72,10 +68,8 @@ export class PostDetailsComponent implements OnInit {
         this.dataService.getPost(id)
           .subscribe((post: IPost) => {
             this.post = post;
-            //this.post.id = id;
             if(!this.post.likes) this.post.likes = 0;
             if(!this.post.dislikes) this.post.dislikes = 0;
-            this.mapEnabled = true;
           });
       }
     });
@@ -96,19 +90,19 @@ export class PostDetailsComponent implements OnInit {
     this.commentFroms.removeAt(i);
   }
   
-  saveComment(i) {
+  async saveComment(i) {
     var item = this.commentFroms.at(i).value;
     this.comment.text = item.text;
     this.com.comment = item.text;
     this.com.id = this.post._id;
-    var id = this.post._id;
-    this.dataService.insertComment(this.com)
-         .subscribe((status: boolean)=>
-           {
-             if (status){
+    //var id = this.post._id;
+    //this.dataService.insertComment(this.com)
+    await this.http.put<IApiResponse>(this.postsBaseUrl, this.com)
+         .subscribe( status =>
+         {
+           if (status.status) {
               this.growler.growl('Comment Inserted', GrowlerMessageType.Success);
               this.errorMessage = 'Comment Inserted';
-              this.mapEnabled = true;
               this.post.comments.push(this.comment);
               this.deleteComment(i);
              }
@@ -119,16 +113,16 @@ export class PostDetailsComponent implements OnInit {
         )
     
   }
-  likePost() {
+  async likePost() {
 
-    this.dataService.likePost(this.post)
-         .subscribe((status: boolean)=>
-           {
-             if (status){
+    //this.dataService.likePost(this.post)
+    await this.http.put<IApiResponse>(this.postsBaseUrl + 'like/', this.post)
+         .subscribe( status =>
+         {
+           if (status.status) {
               this.growler.growl('I liked it. \\\(^.^)/', GrowlerMessageType.Success);
               this.errorMessage = 'I liked it';
               ++this.post.likes;
-              this.mapEnabled = true;
              }
              else{
               this.growler.growl('Unable to insert comment', GrowlerMessageType.Danger);
@@ -137,16 +131,15 @@ export class PostDetailsComponent implements OnInit {
         )
     
   }
-  dislikePost() {
-
-    this.dataService.dislikePost(this.post)
-         .subscribe((status: boolean)=>
-           {
-             if (status){
+  async dislikePost() {
+    await this.http.put<IApiResponse>(this.postsBaseUrl + 'dislike/', this.post)
+    //this.dataService.dislikePost(this.post)
+         .subscribe( status =>
+         {
+           if (status.status) {
               this.growler.growl('I disliked it. /(^.^)\\', GrowlerMessageType.Success);
               this.errorMessage = 'I disliked it';
               ++this.post.dislikes;
-              this.mapEnabled = true;
              }
              else{
               this.growler.growl('Unable to insert dislike', GrowlerMessageType.Danger);
@@ -155,17 +148,17 @@ export class PostDetailsComponent implements OnInit {
         )
     
   }
-  likeComment(id, index) {
+  async likeComment(id, index) {
     this.like_dislike_com.id = id;
     this.like_dislike_com.index = index;
-    this.dataService.likeComment(this.like_dislike_com)
-         .subscribe((status: boolean)=>
-           {
-             if (status){
+    //await this.dataService.likeComment(this.like_dislike_com)
+    await this.http.put<IApiResponse>(this.postsBaseUrl + 'likecomment/', this.like_dislike_com)
+         .subscribe( status =>
+         {
+           if (status.status) {
               this.growler.growl('I liked the comment. \\\(^.^)/', GrowlerMessageType.Success);
               this.errorMessage = 'I liked it';
               ++this.post.comments[index].likes;
-              this.mapEnabled = true;
              }
              else{
               this.growler.growl('Unable to insert comment', GrowlerMessageType.Danger);
@@ -174,17 +167,17 @@ export class PostDetailsComponent implements OnInit {
         )
     
   }
-  dislikeComment(id,index) {
+ async dislikeComment(id,index) {
     this.like_dislike_com.id = id;
     this.like_dislike_com.index = index;
-    this.dataService.dislikeComment(this.like_dislike_com)
-         .subscribe((status: boolean)=>
-           {
-             if (status){
+    //this.dataService.dislikeComment(this.like_dislike_com)
+    await this.http.put<IApiResponse>(this.postsBaseUrl + 'dislikecomment/', this.like_dislike_com)
+         .subscribe(status=>
+         {
+           if (status.status) {
               this.growler.growl('I disliked the comment. /(^.^)\\', GrowlerMessageType.Success);
               this.errorMessage = 'I disliked it';
               ++this.post.comments[index].dislikes;
-              this.mapEnabled = true;
              }
              else{
               this.growler.growl('Unable to insert dislike', GrowlerMessageType.Danger);

@@ -56,3 +56,7 @@ export interface LikeComment {
   index: number;
 }
 
+export interface Status {
+  status: boolean;
+}
+

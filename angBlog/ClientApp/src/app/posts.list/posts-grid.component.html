@@ -13,9 +13,13 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let post of posts">
-                            <td><a [routerLink]="['/post',post._id,'details']">{{ post.createDate| date : "dd/MMM/yyyy" }}</a></td>
+                            <td><a [routerLink]="['/posts',post._id,'details']">{{ post.createDate| date : "dd/MMM/yyyy" }}</a></td>
                             <td>{{ post.author}}</td>
-                            <td>{{ post.title }}</td>
+                            <td>
+                              <a [routerLink]="['/posts',post._id,'details']" >
+                                {{ post.title}}
+                              </a>
+                            </td>
                         </tr>
                         <tr *ngIf="!posts.length">
                             <td>&nbsp;</td>

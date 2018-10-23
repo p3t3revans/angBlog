@@ -13,7 +13,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'cm-post-add',
   templateUrl: './post-add.component.html',
-  styleUrls: ['./post-edit.component.css']
+  styleUrls: ['./post-add.component.css']
 })
 export class PostAddComponent implements OnInit {
   //editorConfig: AngularEditorConfig = {
@@ -77,13 +77,13 @@ export class PostAddComponent implements OnInit {
     });
   } */
 
-  submit() {
+  async submit() {
     var headers = new HttpHeaders().set('content-type', 'application/json');
-    this.http.post<NewPost>(this.postURL, this.post, { headers }).subscribe(result => {
+   await this.http.post<NewPost>(this.postURL, this.post, { headers }).subscribe(result => {
       result;
 
     }, error => console.error(error));
-    this.router.navigate(['/posts']);
+    this.router.navigate(['/listposts']);
 
     //var headers = new HttpHeaders().set('content-type', 'application/json');
     //this.http.post<IPost>(this.weatherURL, this.post, { headers }).subscribe(result => {
@@ -110,7 +110,7 @@ export class PostAddComponent implements OnInit {
   cancel(event: Event) {
     event.preventDefault();
     // Route guard will take care of showing modal dialog service if data is dirty
-    this.router.navigate(['/posts']);
+    this.router.navigate(['/listposts']);
   }
 
 

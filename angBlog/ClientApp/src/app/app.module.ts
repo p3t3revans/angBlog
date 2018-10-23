@@ -1,39 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+//import { LoginModule } from './login/login.module';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from './shared/shared.module';
-import { CoreModule } from './core/core.module';
-
-import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-//import { PostsComponent } from './posts/posts.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavMenuComponent,
-    HomeComponent
-    //PostsComponent
-  ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    SharedModule,
-    CoreModule,
-    HttpClientModule,
+    //BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      //{ path: 'posts', component: PostsComponent },
-      { path: 'addpost', loadChildren: 'app/post.add/post.module#PostModule' },
-      { path: 'listposts', loadChildren: 'app/posts.list/posts.module#PostsModule' },
-      { path: 'posts/:id', loadChildren: 'app/post/post.module#PostModule' },
-    ])
+   // LoginModule,          // Eager loaded since we may need to go here right away as browser loads based on route user enters
+    AppRoutingModule,     // Main routes for application
+    CoreModule,           // Singleton objects (services, components that are loaded only once, etc.)
+    SharedModule,          // Shared (multi-instance) objects
+    HttpClientModule   
   ],
-  providers: [],
+  declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

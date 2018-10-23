@@ -5,23 +5,23 @@
         </header>
         <br />
         <div class="navbar">
-            <ul class="nav navbar-nav">
-                <li class="toolbar-item">
-                    <a routerLink="details" routerLinkActive="active">
-                       <span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Post Details
-                    </a>
-                </li>
-             <!--    <li class="toolbar-item">
-                    <a routerLink="comments" routerLinkActive="active">
-                        <span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;Post Comments
-                    </a>
-                </li> -->
-                <li class="toolbar-item">
-                    <a routerLink="edit" routerLinkActive="active">
-                        <span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Edit Post
-                    </a>
-                </li>
-            </ul>
+          <ul class="nav navbar-nav">
+            <li class="toolbar-item">
+              <a routerLink="/listposts" routerLinkActive="active">
+                <span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;List Posts
+              </a>
+            </li>
+            <!--    <li class="toolbar-item">
+         <a routerLink="comments" routerLinkActive="active">
+             <span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;Post Comments
+         </a>
+     </li>
+     <li class="toolbar-item">
+         <a routerLink="edit" routerLinkActive="active">
+             <span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Edit Post
+         </a>
+     </li>-->
+          </ul>
         </div>
         <div class="container">
             <router-outlet></router-outlet>

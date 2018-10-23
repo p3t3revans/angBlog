@@ -75,7 +75,7 @@ namespace angBlog.Controllers
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase("blog");
             var col = db.GetCollection<MongoPost>("posts");
-            var mongoId = new ObjectId(id);
+            ObjectId mongoId = new ObjectId(id);
             var query = new BsonDocument(new BsonElement("_id", mongoId));
             var list = col.Find(query).ToList();
             var index = 0;
@@ -97,11 +97,7 @@ namespace angBlog.Controllers
                 index++;
 
             }
-
-
-
             return posts[0];
-
         }
 
         // POST: api/Post
@@ -109,7 +105,6 @@ namespace angBlog.Controllers
         [HttpPost]
         public void Post([FromBody] NewPostModel model)
         {
-            //var blogContext = new BlogContext();
             var connectionString = Startup.ConnectionString;
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase("blog");
@@ -126,50 +121,14 @@ namespace angBlog.Controllers
                 tags = new string[] { "tag" },
                 comments = new List<MongoComment>()
             };
-            col.InsertOne(post);
-
-           
+            col.InsertOne(post);          
         }
-
-        // PUT: api/Post/comment?id=string
-        //[HttpPut("comment")]
-        //[ProducesResponseType(201)]
-        //[ProducesResponseType(400)]
-        //public async Task<IActionResult> AddComment(string id, [FromBody] Comment value)
-        //{
-        //    if (value.text == null)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    //await _repository.AddProductAsync(product);
-
-        //    //return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
-        //    var mongoId = new ObjectId(id);
-        //    var query = new BsonDocument(new BsonElement("_id", mongoId));
-        //    var comment = new MongoComment
-        //    {
-        //        createUser = User.Identity.Name,
-        //        text = value.text,
-        //        commentDate = new BsonDateTime(DateTime.Now),
-        //        dislikes = 0,
-        //        likes = 0
-
-        //    };
-        //    var connectionString = Startup.ConnectionString;
-        //    var client = new MongoClient(connectionString);
-        //    var db = client.GetDatabase("blog");
-        //    var col = db.GetCollection<MongoPost>("posts");
-        //    await col.UpdateOneAsync(
-        //        x => x._id == query,
-        //        Builders<MongoPost>.Update.Push(x => x.comments, comment));
-        //    return Ok();
-        //}
-
+       
         [HttpPut]
-        public async void Put([FromBody]Com comment)
+        public async Task<IApiResponse> Put([FromBody]Com comment)
         {
-            var mongoId = new ObjectId(comment.id);
+            IApiResponse status = new IApiResponse();
+            ObjectId mongoId = new ObjectId(comment.id);
             var user = User.Identity.Name;
             if (user == null) user = "nobody";
             var query = new BsonDocument(new BsonElement("_id", mongoId));
@@ -186,73 +145,55 @@ namespace angBlog.Controllers
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase("blog");
             var col = db.GetCollection<MongoPost>("posts");
-            await col.UpdateOneAsync(
+            UpdateResult result = await col.UpdateOneAsync(
                 query,
                 Builders<MongoPost>.Update.Push(x => x.comments, com));
+            status.status = result.IsAcknowledged;
+            if (status.status) status.error = "200";
+            return status;
 
         }
 
 
         [HttpPut("like")]
-        public async Task<IActionResult> LikePost([FromBody]Post post)
+        public async Task<IApiResponse> LikePost([FromBody]Post post)
         {
-            var mongoId = new ObjectId(post._id);
-            var user = User.Identity.Name;
-            if (user == null) user = "nobody";
+            IApiResponse status = new IApiResponse();
+            ObjectId mongoId = new ObjectId(post._id);
             var query = new BsonDocument(new BsonElement("_id", mongoId));
-            //var com = new MongoComment
-            //{
-            //    createUser = user,
-            //    text = comment.comment,
-            //    commentDate = new BsonDateTime(DateTime.Now),
-            //    dislikes = 0,
-            //    likes = 0
-
-            //};
             var connectionString = Startup.ConnectionString;
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase("blog");
             var col = db.GetCollection<MongoPost>("posts");
             UpdateDefinition<MongoPost> updateDef = Builders<MongoPost>.Update.Inc("likes", 1);
-            await col.UpdateOneAsync(query, updateDef);
-            return Ok();
-
-
+            UpdateResult result = await col.UpdateOneAsync(query, updateDef);
+            status.status = result.IsAcknowledged;
+            if (status.status) status.error = "200";
+            return status;
         }
 
         [HttpPut("dislike")]
-        public async Task<IActionResult> DisLikePost([FromBody]Post post)
+        public async Task<IApiResponse> DisLikePost([FromBody]Post post)
         {
-            var mongoId = new ObjectId(post._id);
-            var user = User.Identity.Name;
-            if (user == null) user = "nobody";
+            IApiResponse status = new IApiResponse();
+            ObjectId mongoId = new ObjectId(post._id);
             var query = new BsonDocument(new BsonElement("_id", mongoId));
-            //var com = new MongoComment
-            //{
-            //    createUser = user,
-            //    text = comment.comment,
-            //    commentDate = new BsonDateTime(DateTime.Now),
-            //    dislikes = 0,
-            //    likes = 0
-
-            //};
             var connectionString = Startup.ConnectionString;
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase("blog");
             var col = db.GetCollection<MongoPost>("posts");
             UpdateDefinition<MongoPost> updateDef = Builders<MongoPost>.Update.Inc("dislikes", 1);
-            await col.UpdateOneAsync(query, updateDef);
-            return Ok();
-
-
+            UpdateResult result = await col.UpdateOneAsync(query, updateDef);
+            status.status = result.IsAcknowledged;
+            if (status.status) status.error = "200";
+            return status;
         }
 
         [HttpPut("likecomment")]
-        public async Task<IActionResult> LikeComment([FromBody]CommentLikeModel post)
+        public async Task<IApiResponse> LikeComment([FromBody]CommentLikeModel post)
         {
-            var mongoId = new ObjectId(post.id);
-            var user = User.Identity.Name;
-            if (user == null) user = "nobody";
+            IApiResponse status = new IApiResponse();
+            ObjectId mongoId = new ObjectId(post.id);
             var query = new BsonDocument(new BsonElement("_id", mongoId));
             var connectionString = Startup.ConnectionString;
             var client = new MongoClient(connectionString);
@@ -260,18 +201,17 @@ namespace angBlog.Controllers
             var col = db.GetCollection<MongoPost>("posts");
             var fieldName = string.Format("comments.{0}.likes", post.index);
             UpdateDefinition<MongoPost> updateDef = Builders<MongoPost>.Update.Inc(fieldName, 1);
-            await col.UpdateOneAsync(query, updateDef);
-            return Ok();
-
-
+            UpdateResult result = await col.UpdateOneAsync(query, updateDef);
+            status.status = result.IsAcknowledged;
+            if (status.status) status.error = "200";
+            return status;
         }
 
         [HttpPut("dislikecomment")]
-        public async Task<IActionResult> DisLikeComment([FromBody]CommentLikeModel post)
+        public async Task<IApiResponse> DisLikeComment([FromBody]CommentLikeModel post)
         {
-            var mongoId = new ObjectId(post.id);
-            var user = User.Identity.Name;
-            if (user == null) user = "nobody";
+            IApiResponse status = new IApiResponse();
+            ObjectId mongoId = new ObjectId(post.id);
             var query = new BsonDocument(new BsonElement("_id", mongoId));
             var connectionString = Startup.ConnectionString;
             var client = new MongoClient(connectionString);
@@ -279,46 +219,20 @@ namespace angBlog.Controllers
             var col = db.GetCollection<MongoPost>("posts");
             var fieldName = string.Format("comments.{0}.dislikes", post.index);
             UpdateDefinition<MongoPost> updateDef = Builders<MongoPost>.Update.Inc(fieldName, 1);
-            await col.UpdateOneAsync(query, updateDef);
-            return Ok();
-
-
+            UpdateResult result = await col.UpdateOneAsync(query, updateDef);
+            status.status = result.IsAcknowledged;
+            if (status.status) status.error = "200";
+            return status;
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
         }
 
 
 
-        //[HttpPost]
-        //public async Task<ActionResult> CommentLike(CommentLikeModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return RedirectToAction("Post", new { id = model.PostId });
-        //    }
-
-        //    var blogContext = new BlogContext();
-
-        //    // XXX WORK HERE
-        //    // Increment the Likes field for the comment at {model.Index}
-        //    // inside the post {model.PostId}.
-        //    //
-        //    // NOTE: The 2.0.0 driver has a bug in the expression parser and 
-        //    // might throw an exception depending on how you solve this problem. 
-        //    // This is documented here along with a workaround:
-        //    // https://jira.mongodb.org/browse/CSHARP-1246
-
-        //    var fieldName = string.Format("Comments.{0}.Likes", model.Index);
-
-        //    UpdateDefinition<Post> updateDef = Builders<Post>.Update.Inc(fieldName, 1);
-
-        //    await blogContext.Posts.UpdateOneAsync(x => x._id == model.PostId, updateDef);
-
-        //    return RedirectToAction("Post", new { id = model.PostId });
-        //}
+        
     }
 }

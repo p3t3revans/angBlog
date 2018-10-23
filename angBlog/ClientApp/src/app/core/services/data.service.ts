@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { IPost, ICustomer, IOrder, IState, IPagedResults, IApiResponse, IComment } from '../../shared/interfaces';
-import { NewPost, ICom, LikeComment } from '../../shared/interface';
+import { NewPost, ICom, LikeComment, Status } from '../../shared/interface';
 
 @Injectable()
 export class DataService {
@@ -66,12 +66,12 @@ export class DataService {
         catchError(this.handleError)
       );
   }
-  likeComment(like: LikeComment): Observable<boolean> {
+  likeComment(like: LikeComment): Observable<boolean>{
     return this.http.put<IApiResponse>(this.postsBaseUrl + 'likecomment/', like)
       .pipe(
         map(res => res.status),
         catchError(this.handleError)
-      );
+   );
   }
   dislikePost(post: IPost): Observable<boolean> {
     return this.http.put<IApiResponse>(this.postsBaseUrl + 'dislike/', post)
@@ -80,8 +80,18 @@ export class DataService {
         catchError(this.handleError)
       );
   }
-  dislikeComment(disLike: LikeComment): Observable<boolean> {
-    return this.http.put<IApiResponse>(this.postsBaseUrl + 'dislikecomment/', disLike)
+  dislikeComment(disLike: LikeComment): Observable<boolean>{
+   var ret = this.http.put<IApiResponse>(this.postsBaseUrl + 'dislikecomment/', disLike)
+      .pipe(
+        map(res => res.status),
+     catchError(this.handleError)
+    ).toPromise();
+    var state = new Observable();
+
+   
+     
+
+    return    this.http.put<IApiResponse>(this.postsBaseUrl + 'dislikecomment/', disLike)
       .pipe(
         map(res => res.status),
         catchError(this.handleError)
