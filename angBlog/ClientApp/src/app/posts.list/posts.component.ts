@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 //import { DataService } from '../core/services/data.service';
-import { IPost, Posts } from '../shared/interface';
+import { IPost, Posts } from '../shared/interfaces';
 //import { FilterService } from '../core/services/filter.service';
 import { LoggerService } from '../core/services/logger.service';
 

@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {Router, ActivatedRoute, Params } from '@angular/router';
 import { FormArray, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { IPost, IComment, IApiResponse } from '../shared/interfaces';
-import { ICom, LikeComment, } from '../shared/interface';
+import { IPost, IComment, IApiResponse, ICom, LikeComment, } from '../shared/interfaces';
 import { GrowlerService, GrowlerMessageType } from '../core/growler/growler.service';
 import { DataService } from '../core/services/data.service';
 //import { AngularEditorConfig } from '@kolkov/angular-editor';

@@ -11,7 +11,6 @@ import { DataService } from './services/data.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FilterService } from './services/filter.service';
 import { SorterService } from './services/sorter.service';
-import { TrackByService } from './services/trackby.service';
 import { DialogService } from './services/dialog.service';
 import { EnsureModuleLoadedOnceGuard } from './ensureModuleLoadedOnceGuard';
 import { AuthService } from './services/auth.service';
@@ -22,7 +21,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
   imports: [CommonModule, RouterModule, HttpClientModule, GrowlerModule, ModalModule, OverlayModule],
   exports: [GrowlerModule, RouterModule, HttpClientModule, ModalModule, OverlayModule, NavbarComponent],
   declarations: [NavbarComponent],
-  providers: [SorterService, FilterService, DataService, TrackByService,
+  providers: [SorterService, FilterService, DataService,
     DialogService, AuthService, EventBusService,
     {
       provide: HTTP_INTERCEPTORS,

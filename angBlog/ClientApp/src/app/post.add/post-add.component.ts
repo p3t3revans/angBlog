@@ -4,10 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { DataService } from '../core/services/data.service';
 import { ModalService, IModalContent } from '../core/modal/modal.service';
-import { NewPost} from '../shared/interface';
+import { NewPost} from '../shared/interfaces';
 import { GrowlerService, GrowlerMessageType } from '../core/growler/growler.service';
 import { LoggerService } from '../core/services/logger.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from '@angular/common/http';
 //import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
@@ -16,6 +16,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./post-add.component.css']
 })
 export class PostAddComponent implements OnInit {
+  public progress: number;
+  public message: string;
+  selectedFile: File;
   //editorConfig: AngularEditorConfig = {
   //  editable: true,
   //  spellcheck: true,
@@ -30,14 +33,18 @@ export class PostAddComponent implements OnInit {
   post: NewPost =
     {
       title: '',
-      content: ''
+      content: '',
+      images: ''
     };
   //states: IState[];
   errorMessage: string;
   deleteMessageEnabled: boolean;
   operationText = 'Insert';
   postURL = '';
-
+  uploadLocation = 'assets/images/';
+  uploadFile = '';
+  defaultFile = 'people.png';
+  imageLocation = '';
   
 
  // @ViewChild('addForm') addForm: NgForm;
@@ -53,6 +60,8 @@ export class PostAddComponent implements OnInit {
     @Inject('BASE_URL') baseUrl: string
   ) {
     this.postURL = baseUrl + 'api/Post';
+    this.imageLocation = this.uploadLocation + this.defaultFile;
+
   }
 
 
@@ -65,6 +74,40 @@ export class PostAddComponent implements OnInit {
 
     //this.dataService.getStates().subscribe((states: IState[]) => this.states = states);
   }
+  upload(files) {
+    if (files.length === 0)
+      return;
+
+    const formData = new FormData();
+
+    for (let file of files) {
+      this.uploadFile = file.name;
+      formData.append(file.name, file);
+    }
+
+
+    const uploadReq = new HttpRequest('POST', `api/upload`, formData, {
+      reportProgress: true,
+    });
+
+    this.http.request(uploadReq).subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress)
+        this.progress = Math.round(100 * event.loaded / event.total);
+      else if (event.type === HttpEventType.Response) {
+        this.message = event.body.toString();
+        if (this.message.trim() == 'Upload Successful.') {
+          this.imageLocation = this.uploadLocation + this.uploadFile;
+        }
+        else {
+          this.imageLocation = this.uploadLocation + this.defaultFile;
+        };
+        
+
+      }
+        
+    });
+  }
+
   buildForm() {
     this.addForm = this.formBuilder.group({
       title: ['', [Validators.required]],
@@ -79,11 +122,13 @@ export class PostAddComponent implements OnInit {
 
   async submit() {
     var headers = new HttpHeaders().set('content-type', 'application/json');
+    this.post.images = this.imageLocation;
    await this.http.post<NewPost>(this.postURL, this.post, { headers }).subscribe(result => {
       result;
-
+     const msg = 'new post added';
+     this.growler.growl(msg, GrowlerMessageType.Success);
     }, error => console.error(error));
-    this.router.navigate(['/listposts']);
+    //this.router.navigate(['/listposts']);
 
     //var headers = new HttpHeaders().set('content-type', 'application/json');
     //this.http.post<IPost>(this.weatherURL, this.post, { headers }).subscribe(result => {

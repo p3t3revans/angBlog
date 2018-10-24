@@ -1,35 +1,6 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes } from '@angular/router';
 
-export interface ICustomer {
-    id: number;
-    firstName: string;
-    lastName: string;
-    gender: string;
-    address: string;
-    city: string;
-    state: IState;
-    orders?: IOrder[];
-    orderTotal?: number;
-    latitude?: number;
-    longitude?: number;
-}
-
-export interface IState {
-    abbreviation: string;
-    name: string;
-}
-
-export interface IOrder {
-    productName: string;
-    itemCost: number;
-}
-
-export interface IOrderItem {
-    id: number;
-    productName: string;
-    itemCost: number;
-}
 
 export interface IPagedResults<T> {
     totalRecords: number;
@@ -56,7 +27,21 @@ export interface IPost {
   comments: IComment[];
   likes: number;
   dislikes: number;
+  images: string;
 }
+
+
+export interface NewPost {
+  title: string;
+  content: string;
+  images: string;
+}
+
+export interface Posts {
+  count: number;
+  posts: IPost[];
+}
+
 
 export interface IComment {
   commentDate: Date;
@@ -65,3 +50,18 @@ export interface IComment {
   likes: number;
   dislikes: number;
 }
+
+export interface ICom {
+  id: string;
+  comment: string;
+}
+
+export interface LikeComment {
+  id: string;
+  index: number;
+}
+
+export interface Status {
+  status: boolean;
+}
+

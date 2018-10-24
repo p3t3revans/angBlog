@@ -30,6 +30,8 @@ namespace angBlog.Models
 
         public int dislikes { get; set; }
 
+        public string image { get; set; } 
+
        
     }
 }

@@ -8,6 +8,7 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { FileSelectDirective } from 'ng2-file-upload';
 
 @NgModule({
   imports: [
@@ -15,13 +16,15 @@ import { RouterModule } from '@angular/router';
     //BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-   // LoginModule,          // Eager loaded since we may need to go here right away as browser loads based on route user enters
+    // LoginModule,          // Eager loaded since we may need to go here right away as browser loads based on route user enters
     AppRoutingModule,     // Main routes for application
     CoreModule,           // Singleton objects (services, components that are loaded only once, etc.)
     SharedModule,          // Shared (multi-instance) objects
-    HttpClientModule   
+    HttpClientModule
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent,
+    FileSelectDirective
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

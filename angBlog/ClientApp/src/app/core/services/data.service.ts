@@ -4,16 +4,12 @@ import { HttpClient, HttpErrorResponse, HttpParams, HttpHeaders } from '@angular
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { IPost, ICustomer, IOrder, IState, IPagedResults, IApiResponse, IComment } from '../../shared/interfaces';
-import { NewPost, ICom, LikeComment, Status } from '../../shared/interface';
+import { IPost, NewPost, ICom, LikeComment, Status, IPagedResults, IApiResponse, IComment  } from '../../shared/interfaces';
 
 @Injectable()
 export class DataService {
   postsBaseUrl = ''
-  customersBaseUrl = '/api/customers';
-  ordersBaseUrl = '/api/orders';
-  orders: IOrder[];
-  states: IState[];
+
 
   constructor(private http: HttpClient,
     @Inject('BASE_URL') baseUrl: string
@@ -43,7 +39,6 @@ export class DataService {
     return this.http.get<IPost>(this.postsBaseUrl + '/' + id)
       .pipe(
         map(post => {
-          //this.calculateCustomersOrderTotal([post]);
           return post;
         }),
         catchError(this.handleError)

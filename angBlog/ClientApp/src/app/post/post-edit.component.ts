@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 
 import { DataService } from '../core/services/data.service';
 import { ModalService, IModalContent } from '../core/modal/modal.service';
-import { IPost, IState } from '../shared/interfaces';
+import { IPost} from '../shared/interfaces';
 import { GrowlerService, GrowlerMessageType } from '../core/growler/growler.service';
 import { LoggerService } from '../core/services/logger.service';
 //import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -34,7 +34,8 @@ export class PostEditComponent implements OnInit {
       createDate: new Date(Date.now()),
       tags:['news'],
       likes:0,
-      dislikes:0
+      dislikes: 0,
+      images:''
     };
   //states: IState[];
   errorMessage: string;

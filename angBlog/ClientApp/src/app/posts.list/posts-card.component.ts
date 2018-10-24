@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { IPost } from '../shared/interface';
+import { IPost } from '../shared/interfaces';
 //import { TrackByService } from '../core/services/trackby.service';
 
 @Component({

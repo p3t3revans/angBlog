@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core
 
 //import { SorterService } from '../core/services/sorter.service';
 //import { TrackByService } from '../core/services/trackby.service';
-import { IPost } from '../shared/interface';
+import { IPost } from '../shared/interfaces';
 
 @Component({
   selector: 'cm-posts-grid',

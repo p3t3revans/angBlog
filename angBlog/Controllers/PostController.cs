@@ -52,7 +52,8 @@ namespace angBlog.Controllers
                         likes = doc.likes,
                         dislikes = doc.dislikes,
                         tags = doc.tags,
-                        comments = doc.comments
+                        comments = doc.comments,
+                        images = doc.images
                     };
                     posts.posts.Insert(index, post);
                     index++;
@@ -91,7 +92,8 @@ namespace angBlog.Controllers
                     likes = doc.likes,
                     dislikes = doc.dislikes,
                     tags = doc.tags,
-                    comments = doc.comments
+                    comments = doc.comments,
+                    images = doc.images
                 };
                 posts.Insert(index, post);
                 index++;
@@ -103,8 +105,9 @@ namespace angBlog.Controllers
         // POST: api/Post
 
         [HttpPost]
-        public void Post([FromBody] NewPostModel model)
+        public async Task<IApiResponse> Post([FromBody] NewPostModel model)
         {
+            IApiResponse status = new IApiResponse();
             var connectionString = Startup.ConnectionString;
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase("blog");
@@ -116,12 +119,17 @@ namespace angBlog.Controllers
             {
                 author = user,
                 title = model.Title,
-                content = model.Content,    
+                content = model.Content,  
+                images = model.Images,
                 createDate = new BsonDateTime(DateTime.Now),
                 tags = new string[] { "tag" },
                 comments = new List<MongoComment>()
             };
-            col.InsertOne(post);          
+            await col.InsertOneAsync(post);
+            status.status = true;
+            if (status.status) status.error = "200";
+            return status;
+
         }
        
         [HttpPut]
